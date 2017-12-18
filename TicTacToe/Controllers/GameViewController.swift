@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  GameViewController.swift
 //  TicTacToe
 //
 //  Created by David Davis on 11/28/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
