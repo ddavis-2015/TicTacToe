@@ -25,11 +25,14 @@ class PlayerAi: Player
     
     override func beginTurn()
     {
-        let atTime = DispatchTime.now() + 0.7
-        DispatchQueue.main.asyncAfter(deadline: atTime)
+        self.strategy.computeNextMove(using: Game.instance.board)
         {
-            let position = self.strategy.getNextMove(using: Game.instance.board)
-            Game.instance.submitMove(commit: true, position: position)
+            position in
+            
+            DispatchQueue.main.async
+            {
+                Game.instance.submitMove(commit: true, position: position)
+            }
         }
     }
 }

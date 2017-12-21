@@ -10,10 +10,16 @@ import Foundation
 
 struct StrategyRandom: Strategy
 {
-    func getNextMove(using board: GameBoard) -> Int
+    func computeNextMove(using board: GameBoard, body: @escaping (GameBoard.Position) -> Void)
     {
-        let empties = board.emptySet
+        let empties = board.empties
         let i = Int(arc4random_uniform(UInt32(empties.count)))
-        return empties[empties.index(empties.startIndex, offsetBy: i)]
+        let position = empties[empties.index(empties.startIndex, offsetBy: i)]
+        
+        let atTime = DispatchTime.now() + 0.7
+        DispatchQueue.main.asyncAfter(deadline: atTime)
+        {
+            body(position)
+        }
     }
 }

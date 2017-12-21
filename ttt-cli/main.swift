@@ -49,7 +49,7 @@ class Main
             case BOARD_SIZE
         }
         
-        typealias OptionsDict = [String: CommandLineOptions]
+        typealias OptionsDict = [String : CommandLineOptions]
         typealias OptionsDictIter = DictionaryIterator<String, CommandLineOptions>
         typealias CString = UnsafePointer<Int8>
         typealias OptionsCStringDict = [CString : CommandLineOptions]

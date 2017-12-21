@@ -23,6 +23,8 @@ struct GameBoard
     private var board: [State]
     private let winSets: [PositionSet]
     
+    private(set) var lastMoveData: (state: State, position: Position)
+    
     private mutating func setStates(position: Position, state: State)
     {
         switch board[position - 1]
@@ -43,28 +45,13 @@ struct GameBoard
         case .EMPTY:
             empties.insert(position)
         }
+        
+        lastMoveData = (state, position)
     }
     
-    private var naughts = PositionSet()
-    
-    var naughtSet: PositionSet
-    {
-        return naughts
-    }
-    
-    private var crosses = PositionSet()
-    
-    var crossSet: PositionSet
-    {
-        return crosses
-    }
-    
-    private var empties: PositionSet
-    
-    var emptySet: PositionSet
-    {
-        return empties
-    }
+    private(set) var naughts = PositionSet()
+    private(set) var crosses = PositionSet()
+    private(set) var empties: PositionSet
     
     let stride: Int
     let levels: Int
@@ -76,7 +63,19 @@ struct GameBoard
     
     var hasWon: Bool
     {
-        return !winPositions.isEmpty
+        let testSet: PositionSet
+        
+        switch lastMoveData.state
+        {
+        case .EMPTY:
+            return false
+        case .CROSS:
+            testSet = crosses
+        case .NAUGHT:
+            testSet = naughts
+        }
+        
+        return winSets.contains { $0.isSubset(of: testSet) }
     }
     
     var hasTied: Bool
@@ -84,12 +83,9 @@ struct GameBoard
         for testState in [State.CROSS, State.NAUGHT]
         {
             var testBoard = self
-            for position in 1...testBoard.maxPosition
+            for position in testBoard.empties
             {
-                if testBoard[position] == .EMPTY
-                {
-                    testBoard[position] = testState
-                }
+                testBoard[position] = testState
             }
             if testBoard.hasWon
             {
@@ -100,9 +96,40 @@ struct GameBoard
         return true
     }
     
+    var hasFutureWin: Bool
+    {
+        var testBoard = self
+        for position in testBoard.empties
+        {
+            testBoard[position] = lastMoveData.state
+        }
+
+        return testBoard.hasWon
+    }
+    
+    var hasBlockedWin: Bool
+    {
+        let testState: State
+        
+        switch lastMoveData.state
+        {
+        case .EMPTY:
+            return false
+        case .CROSS:
+            testState = .NAUGHT
+        case .NAUGHT:
+            testState = .CROSS
+        }
+        
+        var testBoard = self
+        testBoard[lastMoveData.position] = testState
+        
+        return testBoard.hasWon
+    }
+    
     var winPositions: [PositionSet]
     {
-        for testSet in [crossSet, naughtSet]
+        for testSet in [crosses, naughts]
         {
             let wins = (winSets.map { $0.isSubset(of: testSet) ? $0 : PositionSet() }).filter { $0.isEmpty == false }
             if wins.isEmpty == false
@@ -169,6 +196,7 @@ struct GameBoard
         self.board = Array<State>(repeating: .EMPTY, count: maxPosition)
         self.empties = PositionSet(1...maxPosition)
         self.winSets = GameBoard.generateWinSets(stride: stride, levels: levels, maxPosition: maxPosition)
+        self.lastMoveData = (.EMPTY, 0)
     }
 }
 

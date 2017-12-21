@@ -19,7 +19,7 @@ struct PlayerFactory
         case .LOCAL:
             player = PlayerLocal(name: settings.playerName, isFirst: settings.playerMovesFirst)
         case .AI_MINIMAX:
-            player = PlayerAi(name: settings.playerName, isFirst: settings.playerMovesFirst, strategy: StrategyMiniMax())
+            player = PlayerAi(name: settings.playerName, isFirst: settings.playerMovesFirst, strategy: StrategyMiniMax(settings: settings))
         case .AI_RANDOM:
             player = PlayerAi(name: settings.playerName, isFirst: settings.playerMovesFirst, strategy: StrategyRandom())
         }

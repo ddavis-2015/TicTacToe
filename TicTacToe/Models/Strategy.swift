@@ -10,5 +10,5 @@ import Foundation
 
 protocol Strategy
 {
-    func getNextMove(using board: GameBoard) -> Int
+    func computeNextMove(using board: GameBoard, body: @escaping (GameBoard.Position) -> Void)
 }
