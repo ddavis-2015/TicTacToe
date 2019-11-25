@@ -7,7 +7,7 @@
 		<key>TicTacToe.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 		<key>ttt-cli.xcscheme</key>
 		<dict>
@@ -17,6 +17,21 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>4D35C1611FCE245C00A7BA04</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4D35C1771FCE245C00A7BA04</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4D35C1821FCE245C00A7BA04</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4DF2E6ED1FD1F5CF00620B61</key>
 		<dict>
 			<key>primary</key>
